@@ -51,6 +51,36 @@ Client.on('guildMemberRemove', member => {
     // });
 });
 
+Client.on('voiceStateUpdate', (oldMember , newMember) => { // เข้าออก voice channel
+    let newUserChannel = newMember.voiceChannel
+    let oldUserChannel = oldMember.voiceChannel
+
+    
+    if (oldUserChannel === undefined && newUserChannel !== undefined)
+    {   
+        let joinmemberembed = new Discord.RichEmbed()
+        .setColor('#22FF00')
+        .setAuthor(newMember.user.username , newMember.user.avatarURL)
+        .setDescription(newMember.user.username + ' Joined voice channel #'+ newMember.voiceChannel.name)
+        newMember.guild.channels.get('546373490996150282').send(joinmemberembed)
+    }
+    else if (newUserChannel === undefined)
+    {    
+        let leavememberembed = new Discord.RichEmbed()
+        .setColor('#22FF00')
+        .setAuthor(oldMember.user.username, oldMember.user.avatarURL)
+        .setDescription(oldMember.user.username + ' Left voice channel #'+ oldMember.voiceChannel.name)
+        oldMember.guild.channels.get('546373490996150282').send(leavememberembed)
+    }
+    else if (oldUserChannel !== undefined && newUserChannel !== undefined)
+    {
+        let movememberembed = new Discord.RichEmbed()
+        .setColor('#22FF00')
+        .setAuthor(newMember.user.username, newMember.user.avatarURL)
+        .setDescription(newMember.user.username + ' Switched voice channel #'+ oldMember.voiceChannel.name+ ' -> #' + newMember.voiceChannel.name)
+        newMember.guild.channels.get('546373490996150282').send(movememberembed)
+    }
+})
 
 Client.on('ready', () => {
     console.log('Blueline Active...')
